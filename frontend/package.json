@@ -9,6 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@lit-protocol/access-control-conditions": "^2.2.25",
+    "@lit-protocol/auth-helpers": "^2.2.25",
+    "@lit-protocol/bls-sdk": "^2.2.25",
+    "@lit-protocol/lit-node-client": "^2.2.25",
+    "@lit-protocol/pkp-client": "^2.2.25",
+    "@lit-protocol/pkp-ethers": "^2.2.25",
     "@next/font": "13.4.6",
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.6",
