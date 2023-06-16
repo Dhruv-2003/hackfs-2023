@@ -159,12 +159,10 @@ async function handleStoreEncryptionConditionNodes(googleCredentialResponse) {
   };
 }
 
-async function getSessionSigs(
-  litNodeClient,
-  encryptedSymmetricKey,
-  authMethod
-) {
+async function getSessionSigs(encryptedSymmetricKey, authMethod) {
   let authenticatedPkpPublicKey;
+
+  const litNodeClient = getLitNodeClient();
 
   // this will be fired if auth is needed. we can use this to prompt the user to sign in
   const authNeededCallback = async ({ resources, expiration, statement }) => {
