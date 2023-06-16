@@ -16,6 +16,8 @@
     "@lit-protocol/pkp-client": "^2.2.25",
     "@lit-protocol/pkp-ethers": "^2.2.25",
     "@next/font": "13.4.6",
+    "@react-oauth/google": "^0.11.0",
+    "dotenv": "^16.2.0",
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.6",
     "next": "13.4.6",
