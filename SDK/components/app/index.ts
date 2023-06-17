@@ -1,1 +1,0 @@
-import Nextapp from "./nextapp";

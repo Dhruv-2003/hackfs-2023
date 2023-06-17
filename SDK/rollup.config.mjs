@@ -12,7 +12,7 @@ import packageJson from "./package.json" assert { type: "json" };
 
 export default [
   {
-    input: "sdk/index.ts",
+    input: "src/index.ts",
     output: [
       {
         file: packageJson.main,
@@ -33,11 +33,7 @@ export default [
       postcss(),
       terser(),
     ],
-    external: [
-      "next",
-      "wagmi",
-      "viem"
-    ],
+    external: ["next", "wagmi", "viem"],
   },
   {
     input: "dist/esm/types/index.d.ts",
