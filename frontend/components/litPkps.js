@@ -159,11 +159,12 @@ async function handleStoreEncryptionConditionNodes(googleCredentialResponse) {
   };
 }
 
-async function getSessionSigs(encryptedSymmetricKey, authMethod) {
-  let authenticatedPkpPublicKey;
-
-  const litNodeClient = getLitNodeClient();
-
+async function getSessionSigs(
+  litNodeClient,
+  encryptedSymmetricKey,
+  authMethod,
+  requestedPkpPublicKey
+) {
   // this will be fired if auth is needed. we can use this to prompt the user to sign in
   const authNeededCallback = async ({ resources, expiration, statement }) => {
     console.log("authNeededCallback fired");
@@ -173,6 +174,7 @@ async function getSessionSigs(encryptedSymmetricKey, authMethod) {
 
     // Get AuthSig
     const { authSig, pkpPublicKey } = await litNodeClient.signSessionKey({
+      pkpPublicKey: requestedPkpPublicKey,
       authMethods,
       statement,
       expiration:
@@ -184,24 +186,18 @@ async function getSessionSigs(encryptedSymmetricKey, authMethod) {
       pkpPublicKey,
     });
 
-    authenticatedPkpPublicKey = pkpPublicKey;
-
     return authSig;
   };
 
-  //   const hashedEncryptedSymmetricKeyStr = await hashBytes({
-  //     bytes: new Uint8Array(encryptedSymmetricKey),
-  //   });
+  // const hashedEncryptedSymmetricKeyStr = await hashBytes({
+  //   bytes: new Uint8Array(encryptedSymmetricKey),
+  // });
 
-  const hashedEncryptedSymmetricKeyStr = await LitJsSdk.hashEncryptionKey({
-    encryptedSymmetricKey,
-  });
-
-  // Construct the LitResource
-  const litResource =
-    new LitJsSdk_authHelpers.LitAccessControlConditionResource(
-      hashedEncryptedSymmetricKeyStr
-    );
+  // // Construct the LitResource
+  // const litResource =
+  //   new LitJsSdk_authHelpers.LitAccessControlConditionResource(
+  //     hashedEncryptedSymmetricKeyStr
+  //   );
 
   // Get the session sigs
   const sessionSigs = await litNodeClient.getSessionSigs({
@@ -210,23 +206,20 @@ async function getSessionSigs(encryptedSymmetricKey, authMethod) {
     resourceAbilityRequests: [
       {
         resource: litResource,
-        ability:
-          LitJsSdk_authHelpers.LitAbility.AccessControlConditionDecryption,
+        ability: LitJsSdk_authHelpers.LitAbility.PKPSigning,
       },
     ],
     // resources: [`litEncryptionCondition://*`],
     // sessionCapabilityObject: {
-    //   def: ["litEncryptionCondition"]
+    // 	def: ["litEncryptionCondition"],
     // },
     switchChain: false,
     authNeededCallback,
   });
   console.log("sessionSigs: ", sessionSigs);
-  console.log("authenticatedPkpPublicKey: ", authenticatedPkpPublicKey);
 
   return {
     sessionSigs,
-    authenticatedPkpPublicKey: authenticatedPkpPublicKey,
   };
 }
 
