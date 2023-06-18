@@ -20,12 +20,13 @@ const Dashboard = () => {
           </div>
           <div className="w-2/3 xl:w-3/5 mt-20 flex flex-col">
             <div className="flex">
-              <div className="w-1/3 justify-start">
+              <div className="w-1/3 flex flex-col justify-start">
                 <Image
                   src={avatar}
                   alt="hello"
                   className="rounded-full w-40 h-40"
                 ></Image>
+                <button className="flex justify-center items-center mx-auto mt-10 bg-white text-blue-500 px-10 rounded-xl py-2 font-semibold">SELL</button>
               </div>
               <div className="w-2/3 justify-end mx-12 mt-2">
                 <div className="flex flex-col">
