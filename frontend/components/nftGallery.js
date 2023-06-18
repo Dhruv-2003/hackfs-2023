@@ -36,7 +36,7 @@ export default function NftGallery({
           body: JSON.stringify({
             address: walletAddress,
             pageSize: pageSize ? pageSize : 30,
-            chain: chain ? chain : "ETH_MAINNET",
+            chain: chain ? chain : "ETHEREUM_MAINNET",
             pageKey: pageKey ? pageKey : null,
             excludeFilter: excludeFilter,
           }),
@@ -71,7 +71,7 @@ export default function NftGallery({
           body: JSON.stringify({
             address: collectionAddress,
             pageSize: pageSize,
-            chain: chain,
+            chain: "ETHEREUM_MAINNET",
             pageKey: pageKey ? pageKey : null,
             excludeFilter: excludeFilter,
           }),

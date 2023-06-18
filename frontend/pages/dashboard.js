@@ -2,6 +2,9 @@ import Image from "next/image";
 import React, { useState } from "react";
 import avatar from "../public/avatar.gif";
 import styles from "../styles/progressbar.module.css";
+import codgun from "../public/codgun.png";
+import codskin from "../public/codskin.jpeg";
+import gtacar from "../public/gtacar.png";
 
 const Dashboard = () => {
   const [xp, setXp] = useState(2);
@@ -29,21 +32,21 @@ const Dashboard = () => {
                   <div className="flex justify-between w-full">
                     <div className="">
                       <p className="text-xl text-indigo-400">Name</p>
-                      <p className="mt-2 text-white text-xl">hello</p>
+                      <p className="mt-2 text-white text-xl">Walter White</p>
                     </div>
                     <div className="">
                       <p className="text-xl text-indigo-400">username</p>
-                      <p className="mt-2 text-white text-xl">hello</p>
+                      <p className="mt-2 text-white text-xl">heisenberg57</p>
                     </div>
                   </div>
                   <div className="flex justify-between mt-10 w-full">
                     <div className="">
                       <p className="text-xl text-indigo-400">Email-Id</p>
-                      <p className="mt-2 text-white text-xl">hello</p>
+                      <p className="mt-2 text-white text-xl">heisenberg721@gmail.com</p>
                     </div>
                     <div className="">
                       <p className="text-xl text-indigo-400">Wallet Address</p>
-                      <p className="text-white text-lg mt-2">hello</p>
+                      <p className="text-white text-lg mt-2">0x613b9...Ba14f705381</p>
                     </div>
                   </div>
                   <div className="flex flex-col mt-12">
@@ -73,7 +76,7 @@ const Dashboard = () => {
                     <div>
                       <p className="text-xl text-indigo-400">Tier</p>
                     </div>
-                    <p className="text-xl text-white mt-2">Silver</p>
+                    <p className="text-2xl text-neutral-300 mt-2">🥈 Silver</p>
                   </div>
                 </div>
                 <div className="flex flex-col mt-8">
@@ -81,19 +84,41 @@ const Dashboard = () => {
                     <p className="text-xl text-indigo-400">Assets</p>
                   </div>
                   <div className="w-full flex justify-between mt-5">
-                    <p className="text-xl text-white">COD</p>
-                    <p className="text-xl text-white">GTA 5</p>
+                    <p className="text-xl text-white underline">COD</p>
+                    <p className="text-xl text-white underline">GTA 5</p>
                   </div>
                   <div className="w-full flex justify-between mt-5">
                     <div>
-                      {codassets.map(() => {
-                        return <div className="mt-4"></div>;
-                      })}
+                      <div className="mt-4">
+                        <p>GUN MP6</p>
+                        <Image
+                          src={codgun}
+                          alt="gun"
+                          className="rounded-xl"
+                          height={100}
+                          width={100}
+                        />
+                        <p className="mt-6">Skin</p>
+                        <Image
+                          src={codskin}
+                          alt="gun"
+                          className="rounded-xl"
+                          height={100}
+                          width={100}
+                        />
+                      </div>
                     </div>
                     <div>
-                      {gta.map(() => {
-                        return <div className="mt-4"></div>;
-                      })}
+                      <div className="mt-4">
+                        <p>GTA Car-117</p>
+                        <Image
+                          src={gtacar}
+                          alt="gun"
+                          className="rounded-xl"
+                          height={100}
+                          width={100}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -101,10 +126,8 @@ const Dashboard = () => {
                   <div>
                     <p className="text-xl text-indigo-400">Challenges</p>
                   </div>
-                  <div className="">
-                    {challenges.map(() => {
-                      return <div className="mt-4"></div>;
-                    })}
+                  <div className="mt-4">
+                    <p className="text-xl text-white">No challenges done yet</p>
                   </div>
                 </div>
               </div>
