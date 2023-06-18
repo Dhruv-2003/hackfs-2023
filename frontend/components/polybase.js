@@ -25,7 +25,10 @@ const PolybaseUi = () => {
     })
     
     // for constructor   creating collection record
-    const collection = await db.collection("City").create(["new-york", "New York"]);
+    const collection = await db.collection("City").create(["new-york2", "New York2"]);
+
+    await db.collection("Country").create(["2", "spain"]);
+    
     // for functions    updating
     await db.collection("City").call("setCountry", ["USA"]);
     //for reading
