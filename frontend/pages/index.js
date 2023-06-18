@@ -30,9 +30,19 @@ export default function Home() {
 
   return (
     <div>
-      <div className="w-screen">
+      <div className="w-screen bg-gradient-to-br from-black to-indigo-600">
         <div className="flex">
-          <div className="w-2/3 justify-start"></div>
+          <div className="w-2/3 flex flex-col justify-start">
+            <p className="text-7xl text-violet-400 justify-center mx-auto mt-20 ml-10">
+              Decentralised ID that can hold your in-game assets and can be sold
+              or bought on ARK marketplace with a single click.
+            </p>
+            <p className="text-4xl text-white justify-center mx-auto mt-20 ml-10">
+              Login in into different games with a single ARK ID and have a
+              wholesome experience having your assets already lined up for you.
+              You can also sell this ID on our Marketplace.
+            </p>
+          </div>
           <div className="w-1/3 justify-end">
             <div className="flex flex-col items-center justify-center h-screen my-auto mx-10">
               <div className="bg-white shadow rounded w-full p-10">
