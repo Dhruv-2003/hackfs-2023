@@ -39,7 +39,7 @@ export function LitProvider({ children }) {
   const [authMethod, setAuthMethod] = useState();
   const [pkpWallet, setpkpWallet] = useState();
   const router = useRouter();
-  const client = createPublicClient({
+  const publicClient = createPublicClient({
     chain: polygonMumbai,
     transport: http(RPC),
   });
@@ -120,6 +120,7 @@ export function LitProvider({ children }) {
     if (!currentPKP) {
       fetchPkp(provider, authMethod);
     }
+    console.log(authMethod);
     const authNeededCallback = async (authCallbackParams) => {
       const chainId = 137;
       console.log(authCallbackParams);
@@ -127,7 +128,7 @@ export function LitProvider({ children }) {
         authMethods: [
           {
             authMethodType: 7,
-            accessToken: accessToken,
+            accessToken: authMethod.accessToken,
           },
         ],
         pkpPublicKey: currentPKP.publicKey,
@@ -161,7 +162,6 @@ export function LitProvider({ children }) {
               ability: LitJsSdk_authHelpers.LitAbility.PKPSigning,
             },
           ],
-          authNeededCallback,
         },
         litNodeClient,
       });
@@ -179,7 +179,7 @@ export function LitProvider({ children }) {
       controllerSessionSigs: sessionSigs,
       // Or you can also pass in controllerSessionSigs
       pkpPubKey: currentPKP.publicKey,
-      rpc: "https://rpc.ankr.com/polygon_mumbai",
+      rpc: "https://polygon-mumbai.g.alchemy.com/v2/bZFiL-IFAMe4QAh9Q30gDQ7m1vxEss4u",
     });
 
     console.log(pkpWallet);
@@ -205,6 +205,7 @@ export function LitProvider({ children }) {
     setAuthMethod,
     setProvider,
     setpkpWallet,
+    publicClient,
   };
 
   return <LitContext.Provider value={value}>{children}</LitContext.Provider>;

@@ -7,4 +7,4 @@ export const ERC6551Registery_Address =
 
 export const ERC6551Impl_Address = "0x29a3592BCcdB65f3183b3e755590b7EdB7527C1c";
 
-export const ARK_Address = "0x5ad70f724777efED9d4b6AB08Fb2Fbb827521C40";
+export const ARKBadge_Address = "0x5ad70f724777efED9d4b6AB08Fb2Fbb827521C40";
