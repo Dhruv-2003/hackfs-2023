@@ -1,0 +1,39 @@
+.progressbar {
+    width: 240px;
+    height: 10px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+@media screen and (max-width: 480px) {
+    .progressbar {
+        width: 180px;
+        height: 7px;
+    }
+}
+@media screen and (min-width: 768px) {
+    .progressbar {
+        width: 360px;
+    }
+}
+@media screen and (min-width: 1200px) {
+    .progressbar {
+        width: 360px;
+    }
+}
+@media screen and (min-width: 1201px) {
+    .progressbar {
+        width: 540px;
+    }
+}
+@media screen and (min-width: 2000px) {
+    .progressbar {
+        width: 1200px;
+    }
+}
+
+.progressbar div {
+    height: 100%;
+    background-color: rgb(129 140 248 );
+    border-radius: 10px;
+}
