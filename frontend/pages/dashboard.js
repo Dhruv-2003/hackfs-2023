@@ -4,7 +4,10 @@ import avatar from "../public/avatar.gif";
 import styles from "../styles/progressbar.module.css";
 
 const Dashboard = () => {
-    const [xp, setXp] = useState(2);
+  const [xp, setXp] = useState(2);
+  const [codassets, setCodAssets] = useState([]);
+  const [gta, setgta] = useState([]);
+  const [challenges, setchallenges] = useState([]);
   return (
     <div>
       <div className="w-screen">
@@ -43,11 +46,11 @@ const Dashboard = () => {
                       <p className="text-white text-lg mt-2">hello</p>
                     </div>
                   </div>
-                  <div className="flex flex-col mt-14">
+                  <div className="flex flex-col mt-12">
                     <div className="w-full">
                       <p className="text-xl text-indigo-400">Player XP</p>
                     </div>
-                    <div className="mt-10">
+                    <div className="mt-6">
                       <div className={styles.progressbar}>
                         <div
                           style={{
@@ -65,6 +68,43 @@ const Dashboard = () => {
                         ></div>
                       </div>
                     </div>
+                  </div>
+                  <div className="flex flex-col mt-8">
+                    <div>
+                      <p className="text-xl text-indigo-400">Tier</p>
+                    </div>
+                    <p className="text-xl text-white mt-2">Silver</p>
+                  </div>
+                </div>
+                <div className="flex flex-col mt-8">
+                  <div>
+                    <p className="text-xl text-indigo-400">Assets</p>
+                  </div>
+                  <div className="w-full flex justify-between mt-5">
+                    <p className="text-xl text-white">COD</p>
+                    <p className="text-xl text-white">GTA 5</p>
+                  </div>
+                  <div className="w-full flex justify-between mt-5">
+                    <div>
+                      {codassets.map(() => {
+                        return <div className="mt-4"></div>;
+                      })}
+                    </div>
+                    <div>
+                      {gta.map(() => {
+                        return <div className="mt-4"></div>;
+                      })}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col mt-8">
+                  <div>
+                    <p className="text-xl text-indigo-400">Challenges</p>
+                  </div>
+                  <div className="">
+                    {challenges.map(() => {
+                      return <div className="mt-4"></div>;
+                    })}
                   </div>
                 </div>
               </div>
