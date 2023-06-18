@@ -1,17 +1,34 @@
 import Image from "next/image";
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import avatar from "../public/avatar.gif";
 import { useLit } from "../context/litContext";
 import { useRouter } from "next/router";
 import { LitAuthClient, isSignInRedirect } from "@lit-protocol/lit-auth-client";
 import { ProviderType, AuthMethodType } from "@lit-protocol/constants";
+import { encodeFunctionData, encodePacked, getAbiItem, parseEther } from "viem";
+import { ARKId_ABI, ERC6551Registery_ABI } from "../constants/ABI";
+import {
+  ERC6551Registery_Address,
+  ERC6551Impl_Address,
+  ArkID_Address,
+} from "../constants/contracts";
 
 const REDIRECT_URI =
   process.env.NEXT_PUBLIC_REDIRECT_URI || "http://localhost:3000/onboard";
 
 function Onboard() {
+  const [userName, setUserName] = useState();
   const router = useRouter();
-  const { setAuthMethod, setProvider, handlePKPs, getSessionSig } = useLit();
+  const {
+    setAuthMethod,
+    setProvider,
+    handlePKPs,
+    getSessionSig,
+    pkpWallet,
+    authMethod,
+    provider,
+    publicClient,
+  } = useLit();
 
   const litAuthClient = new LitAuthClient({
     litRelayConfig: {
@@ -31,6 +48,66 @@ function Onboard() {
     setProvider(provider);
     handlePKPs(provider, authMethod);
   }, [router]);
+
+  const mintArkIDNFT = async () => {
+    console.log(pkpWallet, provider);
+    console.log("Minting ARK ID NFT ..");
+    const data = encodeFunctionData({
+      abi: ARKId_ABI,
+      functionName: "register",
+      args: [userName],
+    });
+    const from = pkpWallet.getAddress();
+    const to = ArkID_Address;
+    const value = parseEther("0.01");
+    const chainId = 80001;
+    const gasLimit = 300000;
+
+    const transactionRequest = {
+      from,
+      to,
+      value,
+      data,
+      chainId,
+      gasLimit,
+    };
+    const signedTransactionRequest = await pkpWallet.signTransaction(
+      transactionRequest
+    );
+    console.log(signedTransactionRequest);
+    const tx = await pkpWallet.sendTransaction(signedTransactionRequest);
+    console.log(tx);
+    createERC6551Account(1);
+  };
+
+  const createERC6551Account = async (tokenId) => {
+    console.log("Creating the ERC6551 Account ..");
+    const data = encodeFunctionData({
+      abi: ERC6551Registery_ABI,
+      functionName: "createAccount",
+      args: [ERC6551Impl_Address, 80001, ArkID_Address, tokenId, 1, "0x"],
+    });
+    const from = pkpWallet.getAddress();
+    const to = ERC6551Registery_Address;
+    const value = 0;
+    const chainId = 80001;
+    const gasLimit = 300000;
+
+    const transactionRequest = {
+      from,
+      to,
+      value,
+      data,
+      chainId,
+      gasLimit,
+    };
+    const signedTransactionRequest = await pkpWallet.signTransaction(
+      transactionRequest
+    );
+    console.log(signedTransactionRequest);
+    const tx = await pkpWallet.sendTransaction(signedTransactionRequest);
+    console.log(tx);
+  };
 
   useEffect(() => {
     // Check if app has been redirected from Lit login server
@@ -68,7 +145,10 @@ function Onboard() {
                   <p className="text-xl text-indigo-400">
                     Your unique username
                   </p>
-                  <input className="w-full mt-2 px-4 py-2 rounded-xl text-white"></input>
+                  <input
+                    className="w-full mt-2 px-4 py-2 rounded-xl text-white"
+                    onSubmit={(e) => setUserName(e.target.value)}
+                  ></input>
                 </div>
                 <div className="mt-10">
                   <p className="text-xl text-indigo-400">Email-Id</p>
@@ -82,7 +162,16 @@ function Onboard() {
             </div>
           </div>
           <div className="justify-center items-center mx-auto mt-10">
-            <button className="px-10 bg-white text-violet-400 rounded-xl py-2 text-xl border font-semibold hover:scale-105 hover:bg-violet-400 hover:text-white hover:border-white">
+            <button
+              onClick={getSessionSig}
+              className="px-10 bg-white text-violet-400 rounded-xl py-2 text-xl border font-semibold hover:scale-105 hover:bg-violet-400 hover:text-white hover:border-white"
+            >
+              getSession Sig
+            </button>
+            <button
+              onClick={() => mintArkIDNFT()}
+              className="px-10 bg-white text-violet-400 rounded-xl py-2 text-xl border font-semibold hover:scale-105 hover:bg-violet-400 hover:text-white hover:border-white"
+            >
               Proceed
             </button>
           </div>

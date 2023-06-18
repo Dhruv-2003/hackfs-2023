@@ -13,7 +13,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 contract ArkDID is ERC721URIStorage {
     // for tracking of tokenIds
     using Counters for Counters.Counter;
-    Counters.Counter private _tokenIds;
+    Counters.Counter public _tokenIds;
 
     address payable public owner;
 
@@ -100,10 +100,7 @@ contract ArkDID is ERC721URIStorage {
     }
 
     // modify the Owner's address after a NFT is sold
-    function modifyIDHolder(
-        string calldata name,
-        address newOwner
-    ) public {
+    function modifyIDHolder(string calldata name, address newOwner) public {
         domains[name] = newOwner;
     }
 
@@ -120,12 +117,16 @@ contract ArkDID is ERC721URIStorage {
         return records[name];
     }
 
+    function getCurrentTokenId() public view returns (uint tokenId) {
+        return _tokenIds.current();
+    }
+
     // function getAllNames() public view returns (string[] memory) {
 
     //     string[] memory allNames = new string[](_tokenIds.current());
     //     for (uint256 i = 0; i < _tokenIds.current(); i++) {
     //         allNames[i] = names[i];
-            
+
     //     }
 
     //     return allNames;
