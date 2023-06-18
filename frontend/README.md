@@ -1,3 +1,11 @@
+## Tasks
+
+Frontend Pages
+
+- MarketPlace
+- Dashboard
+- Create Profile page
+
 {
 "pkps": [
 {

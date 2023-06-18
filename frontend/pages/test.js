@@ -4,31 +4,29 @@ import { LitAuthClient, isSignInRedirect } from "@lit-protocol/lit-auth-client";
 import { LitNodeClient } from "@lit-protocol/lit-node-client";
 import { ProviderType, AuthMethodType } from "@lit-protocol/constants";
 import { useRouter } from "next/router";
-import { handleSignInRedirect } from "../components/Authutils";
+
 import * as LitJsSdk_accessControlConditions from "@lit-protocol/access-control-conditions";
 import * as LitJsSdk_blsSdk from "@lit-protocol/bls-sdk";
 import * as LitJsSdk_authHelpers from "@lit-protocol/auth-helpers";
 import * as LitJsSdk_types from "@lit-protocol/types";
 import { PKPEthersWallet } from "@lit-protocol/pkp-ethers";
-import { toHex } from "viem";
+import { PKPClient } from "@lit-protocol/pkp-client";
 
+import { toHex, parseEther } from "viem";
+import {
+  useAccount,
+  useWalletClient,
+  usePublicClient,
+  useNetwork,
+} from "wagmi";
 const REDIRECT_URI =
   process.env.NEXT_PUBLIC_REDIRECT_URI || "http://localhost:3000/test";
 
-const Views = {
-  SIGN_IN: "sign_in",
-  FETCHING: "fetching",
-  FETCHED: "fetched",
-  MINTING: "minting",
-  MINTED: "minted",
-  CREATING_SESSION: "creating_session",
-  SESSION_CREATED: "session_created",
-  ERROR: "error",
-};
-
 const Test = () => {
   const router = useRouter();
-
+  const publicClient = usePublicClient();
+  const chainId = publicClient.getChainId();
+  const { chain } = useNetwork();
   const [googleIdToken, setGoogleIdToken] = useState();
   const [pkps, setPKPs] = useState([]);
   const [currentPKP, setCurrentPKP] = useState();
@@ -36,6 +34,7 @@ const Test = () => {
   const [provider, setProvider] = useState();
   const [authMethod, setAuthMethod] = useState();
   const [pkpWallet, setpkpWallet] = useState();
+  const [pkpClient, setpkpClient] = useState(second);
 
   const litNodeClient = new LitNodeClient({
     litNetwork: "serrano",
@@ -70,28 +69,29 @@ const Test = () => {
     console.log(authMethod);
     setAuthMethod(authMethod);
     setProvider(provider);
-    // const queryParams = router.query;
-    // console.log(queryParams);
-    // if (queryParams.provider == "google") {
-    //   const accessToken = queryParams.id_token;
-    //   // console.log(accessToken);
-    //   const _authMethod = {
-    //     authMethodType: AuthMethodType.GoogleJwt,
-    //     accessToken: accessToken,
-    //   };
-    //   setAuthMethod(_authMethod);
-    //   console.log(_authMethod);
-    //   router.replace(REDIRECT_URI);
-    // }
   }, [router]);
+
+  async function handlePKPs() {
+    const res = fetchPkp();
+    if (res[0] == undefined) {
+      mintPkp();
+    } else {
+      console.log(res[0]);
+    }
+  }
 
   async function fetchPkp() {
     try {
       console.log(provider);
       console.log(authMethod);
-      const res = await provider.fetchPKPsThroughRelayer(authMethod);
-      console.log(res);
-      setCurrentPKP(res[0]);
+      if (provider && authMethod) {
+        const res = await provider.fetchPKPsThroughRelayer(authMethod);
+        console.log(res);
+        setCurrentPKP(res[0]);
+        return res;
+      } else {
+        console.log("Provider and Auth Method not Set");
+      }
     } catch (error) {
       console.error(error);
     }
@@ -101,17 +101,14 @@ const Test = () => {
     if (provider && authMethod) {
       const mintRes = await provider.mintPKPThroughRelayer(authMethod);
       console.log(mintRes);
+    } else {
+      console.log("Provider and Auth Method not Set");
     }
   }
 
   const getSessionSig = async () => {
     console.log(currentPKP);
     const authNeededCallback = async (authCallbackParams) => {
-      let chainId = 1;
-      try {
-      } catch {
-        // Do nothing
-      }
       console.log(authCallbackParams);
       let response = await litNodeClient.signSessionKey({
         authMethods: [
@@ -132,8 +129,6 @@ const Test = () => {
     try {
       await litNodeClient.connect();
 
-      // Create the Lit Resource keyed by `someResource`
-      // const litResource = new LitAccessControlConditionResource('*');
       const litResource = new LitJsSdk_authHelpers.LitPKPResource(
         currentPKP.tokenId.hex
       );
@@ -146,7 +141,7 @@ const Test = () => {
           accessToken: authMethod.accessToken,
         },
         sessionSigsParams: {
-          chain: "ethereum",
+          chain: chain.name,
           resourceAbilityRequests: [
             {
               resource: litResource,
@@ -171,21 +166,37 @@ const Test = () => {
       controllerSessionSigs: sessionSigs,
       // Or you can also pass in controllerSessionSigs
       pkpPubKey: currentPKP.publicKey,
-      rpc: "https://chain-rpc.litprotocol.com/http",
+      rpc: "https://rpc.ankr.com/polygon_mumbai",
     });
 
     console.log(pkpWallet);
-    // pkpWallet.
     setpkpWallet(pkpWallet);
   }
 
   async function signMessage() {
     console.log(pkpWallet);
-    // const message = "Free the web";
-    // const hexMsg = toHex(message);
-    // const sig = await pkpWallet.signMessage(hexMsg);
-    const chain = await pkpWallet.provider();
-    console.log(chain);
+    const from = "0x613b99C7b122b235C2Ba1426d3fC7Cf7Bf705381";
+    const to = "0x62C43323447899acb61C18181e34168903E033Bf";
+    const value = parseEther("0.01");
+    const data = "0x";
+
+    const transactionRequest = {
+      from,
+      to,
+      value,
+      data,
+    };
+
+    const message = "Free the web";
+    const hexMsg = toHex(message);
+    const sig = await pkpWallet.signMessage(hexMsg);
+    console.log(sig);
+    const signedTransactionRequest = await pkpWallet.signTransaction(
+      transactionRequest
+    );
+    console.log(signedTransactionRequest);
+    const tx = await pkpWallet.sendTransaction(signedTransactionRequest);
+    console.log(tx);
   }
 
   useEffect(() => {
