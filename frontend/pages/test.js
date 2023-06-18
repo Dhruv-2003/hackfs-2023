@@ -10,8 +10,7 @@ import * as LitJsSdk_blsSdk from "@lit-protocol/bls-sdk";
 import * as LitJsSdk_authHelpers from "@lit-protocol/auth-helpers";
 import * as LitJsSdk_types from "@lit-protocol/types";
 import { PKPEthersWallet } from "@lit-protocol/pkp-ethers";
-import { toHex } from "viem";
-
+import { toHex } from "vz
 const REDIRECT_URI =
   process.env.NEXT_PUBLIC_REDIRECT_URI || "http://localhost:3000/test";
 
