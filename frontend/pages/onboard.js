@@ -156,7 +156,7 @@ function Onboard() {
                 </div>
                 <div className="mt-10">
                   <p className="text-xl text-indigo-400">Wallet Address</p>
-                  <p className="text-white text-lg mt-2">hello</p>
+                  <p className="text-white text-lg mt-2">0x2399A...49B</p>
                 </div>
               </div>
             </div>
@@ -164,13 +164,13 @@ function Onboard() {
           <div className="justify-center items-center mx-auto mt-10">
             <button
               onClick={getSessionSig}
-              className="px-10 bg-white text-violet-400 rounded-xl py-2 text-xl border font-semibold hover:scale-105 hover:bg-violet-400 hover:text-white hover:border-white"
+              className="px-10 mx-3 bg-white text-violet-400 rounded-xl py-2 text-xl border font-semibold hover:scale-105 hover:bg-violet-400 hover:text-white hover:border-white"
             >
               getSession Sig
             </button>
             <button
               onClick={() => mintArkIDNFT()}
-              className="px-10 bg-white text-violet-400 rounded-xl py-2 text-xl border font-semibold hover:scale-105 hover:bg-violet-400 hover:text-white hover:border-white"
+              className=" mx-5 px-10 bg-white text-violet-400 rounded-xl py-2 text-xl border font-semibold hover:scale-105 hover:bg-violet-400 hover:text-white hover:border-white"
             >
               Proceed
             </button>
