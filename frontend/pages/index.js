@@ -1,14 +1,32 @@
 import { Inter } from "@next/font/google";
-import { useRouter } from 'next/router'
-
+import { useRouter } from "next/router";
+import { LitAuthClient, isSignInRedirect } from "@lit-protocol/lit-auth-client";
+import { ProviderType, AuthMethodType } from "@lit-protocol/constants";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-
   const router = useRouter();
-  const signUp = ( ) => {
-    router.push("/onboard")
+
+  const litAuthClient = new LitAuthClient({
+    litRelayConfig: {
+      // Request a Lit Relay Server API key here: https://forms.gle/RNZYtGYTY9BcD9MEA
+      relayApiKey: "67e55044-10b1-426f-9247-bb680e5fe0c8_relayer",
+    },
+  });
+
+  async function authWithGoogle() {
+    const provider = litAuthClient.initProvider(ProviderType.Google, {
+      redirectUri: `http://localhost:3000/onboard`,
+    });
+    // Initialize Google provider
+    console.log("Start Google Signin");
+    // const provider = litAuthClient.getProvider(ProviderType.Google);
+    console.log(provider);
+    await provider.signIn();
   }
+  // const signUp = () => {
+  //   router.push("/onboard");
+  // };
 
   return (
     <div>
@@ -21,8 +39,15 @@ export default function Home() {
                 <p className="text-2xl font-extrabold leading-6 text-gray-800">
                   Create your ARK ID
                 </p>
-                <p className="text-violet-400 mt-10 text-xl font-semibold leading-relaxed">Create your Decentralised ID that can hold your in-game assets and can be sold or bought on ARK marketplace with a single click.</p>
-                <button onClick={signUp} className="focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 py-3.5 px-4 border rounded-lg border-gray-700 flex items-center w-full mt-10">
+                <p className="text-violet-400 mt-10 text-xl font-semibold leading-relaxed">
+                  Create your Decentralised ID that can hold your in-game assets
+                  and can be sold or bought on ARK marketplace with a single
+                  click.
+                </p>
+                <button
+                  onClick={authWithGoogle}
+                  className="focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 py-3.5 px-4 border rounded-lg border-gray-700 flex items-center w-full mt-10"
+                >
                   <svg
                     width={19}
                     height={20}
