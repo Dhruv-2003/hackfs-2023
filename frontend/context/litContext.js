@@ -1,5 +1,10 @@
-import React, { useCallback, useState, useEffect } from "react";
-import { GoogleLogin } from "@react-oauth/google";
+import React, {
+  useState,
+  createContext,
+  useContext,
+  useEffect,
+  useCallback,
+} from "react";
 import { LitAuthClient, isSignInRedirect } from "@lit-protocol/lit-auth-client";
 import { LitNodeClient } from "@lit-protocol/lit-node-client";
 import { ProviderType, AuthMethodType } from "@lit-protocol/constants";
@@ -12,29 +17,32 @@ import * as LitJsSdk_types from "@lit-protocol/types";
 import { PKPEthersWallet } from "@lit-protocol/pkp-ethers";
 import { PKPClient } from "@lit-protocol/pkp-client";
 
-import { toHex, parseEther } from "viem";
-import {
-  useAccount,
-  useWalletClient,
-  usePublicClient,
-  useNetwork,
-} from "wagmi";
-const REDIRECT_URI =
-  process.env.NEXT_PUBLIC_REDIRECT_URI || "http://localhost:3000/test";
+import { toHex, parseEther, createPublicClient, http } from "viem";
+import { polygonMumbai } from "viem/chains";
 
-const Test = () => {
-  const router = useRouter();
-  // const publicClient = usePublicClient();
-  // const chainId = publicClient.getChainId();
-  // const { chain } = useNetwork();
-  const [googleIdToken, setGoogleIdToken] = useState();
-  const [pkps, setPKPs] = useState([]);
+const REDIRECT_URI =
+  process.env.NEXT_PUBLIC_REDIRECT_URI || "http://localhost:3000/onboard";
+
+const RPC =
+  process.env.NEXT_PUBLIC_RPC || "https://rpc.ankr.com/polygon_mumbai";
+
+const LitContext = createContext();
+
+export const useLit = () => {
+  return useContext(LitContext);
+};
+
+export function LitProvider({ children }) {
   const [currentPKP, setCurrentPKP] = useState();
   const [sessionSigs, setSessionSigs] = useState();
   const [provider, setProvider] = useState();
   const [authMethod, setAuthMethod] = useState();
   const [pkpWallet, setpkpWallet] = useState();
-  const [pkpClient, setpkpClient] = useState();
+  const router = useRouter();
+  const client = createPublicClient({
+    chain: polygonMumbai,
+    transport: http(RPC),
+  });
 
   const litNodeClient = new LitNodeClient({
     litNetwork: "serrano",
@@ -50,7 +58,7 @@ const Test = () => {
 
   async function authWithGoogle() {
     const provider = litAuthClient.initProvider(ProviderType.Google, {
-      redirectUri: "http://localhost:3000/test",
+      redirectUri: REDIRECT_URI,
     });
     // Initialize Google provider
     console.log("Start Google Signin");
@@ -63,7 +71,7 @@ const Test = () => {
   const handleRedirect = useCallback(async () => {
     // Get auth method object that has the OAuth token from redirect callback
     const provider = litAuthClient.initProvider(ProviderType.Google, {
-      redirectUri: "http://localhost:3000/test",
+      redirectUri: REDIRECT_URI,
     });
     const authMethod = await provider.authenticate();
     console.log(authMethod);
@@ -75,7 +83,6 @@ const Test = () => {
   async function handlePKPs(provider, authMethod) {
     const res = await fetchPkp(provider, authMethod);
     if (res[0] == undefined) {
-      // console.log("Undefined");
       mintPkp(provider, authMethod);
     } else {
       console.log(res[0]);
@@ -108,8 +115,11 @@ const Test = () => {
     }
   }
 
-  const getSessionSig = async (provider, authMethod) => {
+  const getSessionSig = async () => {
     console.log(currentPKP);
+    if (!currentPKP) {
+      fetchPkp(provider, authMethod);
+    }
     const authNeededCallback = async (authCallbackParams) => {
       const chainId = 137;
       console.log(authCallbackParams);
@@ -176,57 +186,26 @@ const Test = () => {
     setpkpWallet(pkpWallet);
   }
 
-  async function signMessage() {
-    console.log(pkpWallet);
-    const from = "0x613b99C7b122b235C2Ba1426d3fC7Cf7Bf705381";
-    const to = "0x62C43323447899acb61C18181e34168903E033Bf";
-    const value = parseEther("0.01");
-    const data = "0x";
+  async function signTransation() {}
 
-    const transactionRequest = {
-      from,
-      to,
-      value,
-      data,
-    };
+  async function sendTransation() {}
 
-    const message = "Free the web";
-    const hexMsg = toHex(message);
-    const sig = await pkpWallet.signMessage(hexMsg);
-    console.log(sig);
-    const signedTransactionRequest = await pkpWallet.signTransaction(
-      transactionRequest
-    );
-    console.log(signedTransactionRequest);
-    const tx = await pkpWallet.sendTransaction(signedTransactionRequest);
-    console.log(tx);
-  }
+  async function signMessage() {}
 
-  useEffect(() => {
-    // Check if app has been redirected from Lit login server
-    if (isSignInRedirect(REDIRECT_URI)) {
-      console.log(true);
-      handleRedirect();
-    }
-  }, [handleRedirect]);
+  const value = {
+    authWithGoogle,
+    handleRedirect,
+    handlePKPs,
+    getSessionSig,
+    generatePKPWallet,
+    pkpWallet,
+    provider,
+    sessionSigs,
+    currentPKP,
+    setAuthMethod,
+    setProvider,
+    setpkpWallet,
+  };
 
-  return (
-    <div>
-      {/* <GoogleLogin
-        onSuccess={(credentialResponse) => {
-          console.log(credentialResponse);
-        }}
-        onError={() => {
-          console.log("Login Failed");
-        }}
-      /> */}
-      <button onClick={() => authWithGoogle()}>Start Signin</button>
-      {/* <button onClick={() => fetchPkp()}>Fetch PKP</button>
-      <button onClick={() => mintPkp()}>Mint PKP</button> */}
-      <button onClick={() => getSessionSig()}>Sign-in</button>
-      <button onClick={() => signMessage()}>Sign msg</button>
-    </div>
-  );
-};
-
-export default Test;
+  return <LitContext.Provider value={value}>{children}</LitContext.Provider>;
+}

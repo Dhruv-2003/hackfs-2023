@@ -39,7 +39,6 @@ contract ArkDID is ERC721URIStorage {
     constructor(string memory _tld) payable ERC721("DEV Name servie", "DNS") {
         owner = payable(msg.sender);
         tld = _tld;
-        console.log("%s name service deployed ", _tld);
     }
 
     function price(string calldata name) public pure returns (uint256) {
@@ -104,7 +103,7 @@ contract ArkDID is ERC721URIStorage {
     function modifyIDHolder(
         string calldata name,
         address newOwner
-    ) public onlyMarketPlace {
+    ) public {
         domains[name] = newOwner;
     }
 
@@ -121,16 +120,16 @@ contract ArkDID is ERC721URIStorage {
         return records[name];
     }
 
-    function getAllNames() public view returns (string[] memory) {
-        console.log("Getting all the names from the contract ");
-        string[] memory allNames = new string[](_tokenIds.current());
-        for (uint256 i = 0; i < _tokenIds.current(); i++) {
-            allNames[i] = names[i];
-            console.log("Name for token %d is %s ", i, allNames[i]);
-        }
+    // function getAllNames() public view returns (string[] memory) {
 
-        return allNames;
-    }
+    //     string[] memory allNames = new string[](_tokenIds.current());
+    //     for (uint256 i = 0; i < _tokenIds.current(); i++) {
+    //         allNames[i] = names[i];
+            
+    //     }
+
+    //     return allNames;
+    // }
 
     modifier onlyOwner() {
         require(isOwner());
