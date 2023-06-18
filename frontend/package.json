@@ -19,6 +19,7 @@
     "@lit-protocol/pkp-ethers": "^2.2.25",
     "@next/font": "13.4.6",
     "@polybase/client": "^0.6.2",
+    "@polybase/react": "^0.6.2",
     "@react-oauth/google": "^0.11.0",
     "dotenv": "^16.2.0",
     "eslint": "8.42.0",
