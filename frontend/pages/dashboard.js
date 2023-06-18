@@ -37,17 +37,21 @@ const Dashboard = () => {
                     </div>
                     <div className="">
                       <p className="text-xl text-indigo-400">username</p>
-                      <p className="mt-2 text-white text-xl">heisenberg57</p>
+                      <p className="mt-2 text-white text-xl">Heisenberg</p>
                     </div>
                   </div>
                   <div className="flex justify-between mt-10 w-full">
                     <div className="">
                       <p className="text-xl text-indigo-400">Email-Id</p>
-                      <p className="mt-2 text-white text-xl">heisenberg721@gmail.com</p>
+                      <p className="mt-2 text-white text-xl">
+                        heisenberg@gmail.com
+                      </p>
                     </div>
                     <div className="">
                       <p className="text-xl text-indigo-400">Wallet Address</p>
-                      <p className="text-white text-lg mt-2">0x613b9...Ba14f705381</p>
+                      <p className="text-white text-lg mt-2">
+                        0x613b9...Ba14f705381
+                      </p>
                     </div>
                   </div>
                   <div className="flex flex-col mt-12">
