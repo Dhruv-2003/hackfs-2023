@@ -1,16 +1,19 @@
-import Head from "next/head";
 import Image from "next/image";
-import { Inter } from "@next/font/google";
-import styles from "../styles/Home.module.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import hero from "../src/assets/img5.png";
 
 export default function Home() {
   return (
-    <main>
-      Ark
-      <div>
-        A Unified but decentralised platform for gamers and game developers
+    <main className="">
+      
+      <div className=" full-screen pt-24 px-6">
+        <div className=" flex justify-around  items-center">
+          <p>
+            A Unified but decentralised platform for gamers and game developers
+          </p>
+          <div className=" max-w-md">
+            <Image src={hero} />
+          </div>
+        </div>
       </div>
     </main>
   );
