@@ -1,36 +1,14 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+{
+"pkps": [
+{
+"tokenId": {
+"type": "BigNumber",
+"hex": "0xd142d39727a6949dcda78c0bb24badbab45683f209e7ce5a732e4771512be117"
+},
+"publicKey": "0x04922fe2abb9ee5e77b90fc3d69cb9c26e064a4f26090079f6ca9b8be739d24d261a8e52fab233b603da4d9894909f76f6d2e774d643895f64d6d24e4013be0f54",
+"ethAddress": "0x52aad2F4a4592253489f99D76e19C6f724031419"
+}
+]
+}
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+http://localhost:3000/test?provider=google&id_token=eyJhbGciOiJSUzI1NiIsImtpZCI6IjA1MTUwYTEzMjBiOTM5NWIwNTcxNjg3NzM3NjkyODUwOWJhYjQ0YWMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzNTUwMDc5ODY3MzEtbGxianE1a2JzZzhpZWI3MDVtbzY0bmZuaDg4ZGhsbW4uYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIzNTUwMDc5ODY3MzEtbGxianE1a2JzZzhpZWI3MDVtbzY0bmZuaDg4ZGhsbW4uYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTY3OTEzNTc4MjI2NjAwMTI3NzIiLCJlbWFpbCI6ImRocnV2YWdhcndhbDIwMTdAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiI1VGo5M1UzQ29tMXhERDVHSnMzWS1nIiwiaWF0IjoxNjg2OTg3MDY2LCJleHAiOjE2ODY5OTA2NjZ9.AqBz-Y3_w6FeGjnW44p31UiiGfbdr8XYkdbgIJzj-7HdXiq4gQQUCW3l9GL933txSNDdrDzveIl4fU7IcU2Etg75U7w0DufpT9Aq_xMPRX4aruY7gmoTIEyCCQdwUoxv5AO-TfQ7DkOHLFKxx3AkjJU8YnkEjp03fmEENW4bzbO2zFDrFBb4_husl6YhyS88s1NOs99gd3gkqbOD3smGYnvpXkjGMWg8TkSNHQbDcccHyD0ec57FGhsvuGT86qntzdVybsaMe1i0-7WwGOmFFW_XUbHamaeSz2CxkDY-dwcrU0X0CnN9Vy3BDidECFFKM_vKijAoi9QhBOGbpK6GOQ&state=a0xoX0twbms2WlE1aUZh
