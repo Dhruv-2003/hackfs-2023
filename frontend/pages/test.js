@@ -11,7 +11,8 @@ import * as LitJsSdk_authHelpers from "@lit-protocol/auth-helpers";
 import * as LitJsSdk_types from "@lit-protocol/types";
 import { PKPEthersWallet } from "@lit-protocol/pkp-ethers";
 import { PKPClient } from "@lit-protocol/pkp-client";
-
+import { Polybase } from "@polybase/client";
+import * as eth from "@polybase/eth";
 import { toHex, parseEther } from "viem";
 import {
   useAccount,
@@ -24,9 +25,9 @@ const REDIRECT_URI =
 
 const Test = () => {
   const router = useRouter();
-  const publicClient = usePublicClient();
-  const chainId = publicClient.getChainId();
-  const { chain } = useNetwork();
+  // const publicClient = usePublicClient();
+  // const chainId = publicClient.getChainId();
+  // const { chain } = useNetwork();
   const [googleIdToken, setGoogleIdToken] = useState();
   const [pkps, setPKPs] = useState([]);
   const [currentPKP, setCurrentPKP] = useState();
@@ -34,11 +35,16 @@ const Test = () => {
   const [provider, setProvider] = useState();
   const [authMethod, setAuthMethod] = useState();
   const [pkpWallet, setpkpWallet] = useState();
-  const [pkpClient, setpkpClient] = useState(second);
+  const [pkpClient, setpkpClient] = useState();
 
   const litNodeClient = new LitNodeClient({
     litNetwork: "serrano",
     debug: true,
+  });
+
+  const db = new Polybase({
+    defaultNamespace:
+      "pk/0xdd6503afa34792ca49abce644c46527bc2f664299797958e7780d21b4713a9698d35124fa269561f078f89c4aea969a862a20021f3f4042e1d5e5803817e28d3/hackfs",
   });
 
   const litAuthClient = new LitAuthClient({
@@ -109,6 +115,7 @@ const Test = () => {
   const getSessionSig = async () => {
     console.log(currentPKP);
     const authNeededCallback = async (authCallbackParams) => {
+      const chainId = 137;
       console.log(authCallbackParams);
       let response = await litNodeClient.signSessionKey({
         authMethods: [
@@ -141,7 +148,7 @@ const Test = () => {
           accessToken: authMethod.accessToken,
         },
         sessionSigsParams: {
-          chain: chain.name,
+          chain: "polygon",
           resourceAbilityRequests: [
             {
               resource: litResource,
